@@ -1,12 +1,11 @@
-
 # Basic FizzBuzz
 def FizzBuzz():
     for i in range(1, 16):
-        if i % 5 == 0 and i % 3 == 0:
+        if ((mod3 := (i % 3 == 0)) & (mod5 := (i % 5 == 0))):
             print('FizzBuzz')
-        elif i % 5 == 0:
+        elif mod5:
             print('Buzz')
-        elif i % 3 == 0:
+        elif mod3:
             print('Fizz')
         else:
             print(i)

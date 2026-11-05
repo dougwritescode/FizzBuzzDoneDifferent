@@ -4,11 +4,11 @@ def match_fizz_buzz(n: int = 15):
     for i in range(1, n + 1):
         match (i % 3, i %5):
             case (0, 0):
-                print(f'{i} FizzBuzz')
+                print(f'FizzBuzz')
             case (0, _):
-                print(f'{i} Fizz')
+                print(f'Fizz')
             case (_, 0):
-                print(f'{i} Buzz')
+                print(f'Buzz')
             case _:
                 print(f'{i}')
 

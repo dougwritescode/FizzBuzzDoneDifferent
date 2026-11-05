@@ -12,20 +12,15 @@ class FizzBuzzMatchingTest(unittest.TestCase):
         with redirect_stdout(output):
             match_fizz_buzz()
         received = output.getvalue()
-        for line in filter(lambda a: a != '', received.split('\n')):
-            splitline = line.split(' ')
-            num = int(splitline[0])
-            if len(splitline) > 1:
-                self.assertTrue(num % 5 == 0 or num % 3 == 0)
-                word = splitline[1]
-                if num % 5 == 0 and num % 3 == 0:
-                    self.assertTrue(word == 'FizzBuzz')
-                elif num % 5 == 0:
-                    self.assertTrue(word == 'Buzz')
-                elif num % 3 == 0:
-                    self.assertTrue(word == 'Fizz')
+        for i, line in enumerate(filter(lambda a: a != '', received.split('\n')), start=1):
+            if (mod3 := (i % 3 == 0)) & (mod5 := (i % 5 == 0)):
+                self.assertTrue(line == 'FizzBuzz')
+            elif mod5:
+                self.assertTrue(line == 'Buzz')
+            elif mod3:
+                self.assertTrue(line == 'Fizz')
             else:
-                self.assertFalse(num % 5 == 0 or num % 3 == 0)
+                self.assertTrue(line == str(i))
 
 
 if __name__ == "__main__":

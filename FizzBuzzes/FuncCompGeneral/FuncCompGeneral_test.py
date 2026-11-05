@@ -5,55 +5,60 @@ from io import StringIO
 from FuncCompGeneral import general_func_comp_fizz_buzz
 
 
-class FizzBuzzFuncCompGeneralTest(unittest.TestCase):
+class FuncCompGeneralFizzBuzzTest(unittest.TestCase):
 
-    def test_fb_matching_basic(self):
+    def test_fb_basic_general_base(self):
         output = StringIO()
         with redirect_stdout(output):
             general_func_comp_fizz_buzz()
         received = output.getvalue()
-        for line in filter(lambda a: a != '', received.split('\n')):
-            splitline = line.split(' ')
-            num = int(splitline[0])
-            if len(splitline) > 1 and splitline[1] != '':
-                self.assertTrue(num % 5 == 0 or num % 3 == 0)
-                word = splitline[1]
-                if num % 5 == 0 and num % 3 == 0:
-                    self.assertTrue(word == 'FizzBuzz')
-                elif num % 5 == 0:
-                    self.assertTrue(word == 'Buzz')
-                elif num % 3 == 0:
-                    self.assertTrue(word == 'Fizz')
+        for i, line in enumerate(filter(lambda a: a != '', received.split('\n')), start=1):
+            if (mod3 := (i % 3 == 0)) & (mod5 := (i % 5 == 0)):
+                self.assertTrue(line == 'FizzBuzz')
+            elif mod5:
+                self.assertTrue(line == 'Buzz')
+            elif mod3:
+                self.assertTrue(line == 'Fizz')
             else:
-                self.assertFalse(num % 5 == 0 or num % 3 == 0)
+                self.assertTrue(line == str(i))
 
-    def test_fb_matching_general(self):
+    def test_fb_basic_general_custom(self):
         output = StringIO()
         with redirect_stdout(output):
-            general_func_comp_fizz_buzz(
-                n=42,
-                d={
-                    6: 'Blarg',
-                    7: 'Honk'
-                }
-            )
+            general_func_comp_fizz_buzz(n=42, d={6:'Blarg',7:'Honk'})
         received = output.getvalue()
-        for line in filter(lambda a: a != '', received.split('\n')):
-            splitline = line.split(' ')
-            num = int(splitline[0])
-            if len(splitline) > 1 and splitline[1] != '':
-                self.assertTrue(num % 7 == 0 or num % 6 == 0)
-                word = splitline[1]
-                if num % 7 == 0 and num % 6 == 0:
-                    self.assertTrue(word == 'BlargHonk')
-                elif num % 7 == 0:
-                    self.assertTrue(word == 'Honk')
-                elif num % 6 == 0:
-                    self.assertTrue(word == 'Blarg')
+        for i, line in enumerate(filter(lambda a: a != '', received.split('\n')), start=1):
+            if (mod6 := (i % 6 == 0)) & (mod7 := (i % 7 == 0)):
+                self.assertTrue(line == 'BlargHonk')
+            elif mod7:
+                self.assertTrue(line == 'Honk')
+            elif mod6:
+                self.assertTrue(line == 'Blarg')
             else:
-                self.assertFalse(num % 7 == 0 or num % 6 == 0)
+                self.assertTrue(line == str(i))
 
-
+    def test_fb_basic_general_custom_2(self):
+        output = StringIO()
+        with redirect_stdout(output):
+            general_func_comp_fizz_buzz(n=55, d={2:'Pak',5:'Chooie',11:'Unf'})
+        received = output.getvalue()
+        for i, line in enumerate(filter(lambda a: a != '', received.split('\n')), start=1):
+            if (mod2 := (i % 2 == 0)) & (mod5 := (i % 5 == 0)) & (mod11 := (i % 11 == 0)):
+                self.assertTrue(line == 'PakChooieUnf')
+            elif mod11 and mod5:
+                self.assertTrue(line == 'ChooieUnf')
+            elif mod11 and mod2:
+                self.assertTrue(line == 'PakUnf')
+            elif mod5 and mod2:
+                self.assertTrue(line == 'PakChooie')
+            elif mod11:
+                self.assertTrue(line == 'Unf')
+            elif mod5:
+                self.assertTrue(line == 'Chooie')
+            elif mod2:
+                self.assertTrue(line == 'Pak')
+            else:
+                self.assertTrue(line == str(i))
 
 if __name__ == "__main__":
     unittest.main()
